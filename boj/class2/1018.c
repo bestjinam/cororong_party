@@ -1,26 +1,49 @@
 #include <stdio.h>
-
-int	min(int a, int b, int c, int d)
-{
-	int	m;
-	m = a;
-	if ( m > b) 
-		m = b;
-	if ( m > c) 
-		m = c;
-	if ( m > d)
-		m = d;
-	return (m);
-}
+#include <stdlib.h>
 
 int	main(void)
 {
-	int	x, y, w, h;
-	int	res;
-	int	m;
+	int	m, n;
+	char	**board;
+	int	i, j, k, q;
+	char	start;
+	int	cnt, min;
 
-	scanf("%d %d %d %d", &x, &y, &w, &h);
-	m = min ((x - 0), (h - y), w - x, y - 0);
- 	printf("%d", m);
-	return (0);
+	scanf("%d %d", &n, &m);
+	board = malloc(sizeof(char *) * n);
+	i = -1;
+	while ( ++i < n)
+	{
+		board[i] = malloc(m + 1);
+		scanf("%s", board[i]);
+	}
+	i = -1;
+	min = 2147483647;
+	while (++i + 8 < n)
+	{
+		j = -1;
+		while ( ++j + 8 < m)
+		{ 
+			k = i - 1;
+			cnt = 0;
+			while (++k < i + 8)
+			{
+				q = j - 1;
+				start = 'W';
+				while (++q < j + 8)
+				{
+					if (start != board[k][q])
+						cnt ++;
+					start = start == 'W' ? 'B' : 'W';
+				}
+				start = start == 'B' ? 'B' : 'W';
+			} 
+			if ( 64 - cnt < cnt)
+				cnt = 64 - cnt;
+			if (cnt < min)
+				min = cnt;
+		}
+
+	}
+	printf("%d", cnt);
 }
